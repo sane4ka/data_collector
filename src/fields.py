@@ -190,35 +190,30 @@ class MultipleField(SingleField):
 
 
 class SurveyStruct(object):
-    def __init__(self, name, title, fields=[]):
+    def __init__(self, fields=[]):
         """fields - a list of fields, _field_dict - dict for addressing fields 
-        by name
+        by its names.
         """
-        self.name = name
-        self.title = title
         self._fields = [] 
         self._field_dict = {}
         for field in fields:
             self.append(field)
-            
-    def __str__(self):
-        return 'survey %s (%s)' %(self.name, self.title)
         
     def _add_to_dict(self, field):
-        field_name = field.name.lower()
+        field_name = field.name.lower().strip()
         if field_name in self._field_dict:
             raise exceptions.DuplicateFieldNameError(\
                 'Error while adding field %s: field with given name already '
-                'exists in the survey %s' %(field, self))
+                'exists in the survey' %field)
         self._field_dict[field_name] = field
         
     def _get_from_dict(self, field_name):
-        field = self._field_dict.get(field_name.lower())
+        field = self._field_dict.get(field_name.lower().strip())
         if field:
             return field
         raise exceptions.FieldDoesNotExist(\
-                        "Field with name %s doesn't exists in the survey %s"\
-                        %(field_name, self))
+                "Field with name %s doesn't exists in the survey" %field_name)
+                        
             
     def __eq__(self, struct):
         return self._field_dict == struct._field_dict

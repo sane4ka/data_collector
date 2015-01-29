@@ -62,7 +62,7 @@ class TestSurveyStruct(unittest.TestCase):
                         fields.SingleField('Q3', 'test q3', self.categories),
                         fields.MultipleField('q4', 'test q4', self.categories)
                     ]
-        self.survey = fields.SurveyStruct('srv1', 'Test Survey', self.fields)
+        self.survey = fields.SurveyStruct(self.fields)
                         
     def test_init(self):
         self.assertEqual(self.survey._fields, self.fields)
